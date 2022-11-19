@@ -1,11 +1,11 @@
 import './App.css'
-import Table from './component/table'
+import Layout from './component/layout'
 
 function App() {
 	return (
 		<div className="App">
 			<header className="task1">
-				<Table />
+				<Layout />
 			</header>
 		</div>
 	)
