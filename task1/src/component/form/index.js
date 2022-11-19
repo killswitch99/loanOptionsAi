@@ -1,58 +1,57 @@
-import { Button, FormControl, Input } from '@mui/material'
+import { Button, ButtonGroup, FormControl, Input } from '@mui/material'
+import { Box } from '@mui/system'
 
 export const AddUniForm = (props) => {
+	const { handleInputChange, handleSubmit, uniData, handleClick, deleteRow } =
+		props
 	return (
-		<div>
-			<FormControl onSubmit={props.handleSubmit}>
-				<label>
-					Name:
-					<Input
-						type="text"
-						name="name"
-						onChange={(e) => props.handleInputChange(e)}
-					/>
-				</label>
-
-				<label>
-					Web Page:
-					<Input
-						type="text"
-						name="web_page"
-						onChange={(e) => props.handleInputChange(e)}
-					/>
-				</label>
-				<label>
-					Country:
-					<Input
-						type="text"
-						name="country"
-						onChange={(e) => props.handleInputChange(e)}
-					/>
-				</label>
-				<label>
-					Alpha Two Code:
-					<Input
-						type="text"
-						name="alpha_two_code"
-						onChange={(e) => props.handleInputChange(e)}
-					/>
-				</label>
-				<Button
-					type="submit"
-					onClick={(e) => props.handleSubmit(e)}
-					fullWidth={true}
-					variant="contained"
-					color="primary"
-				/>
-			</FormControl>
-			<Button variant="contained" color="secondary" onClick={props.handleClick}>
-				Load
-			</Button>
-			<Button variant="contained" color="warning" onClick={props.deleteRow}>
-				Delete
-			</Button>
-		</div>
+		<FormControl>
+			<Input
+				id="name"
+				name="name"
+				type="text"
+				value={uniData.name}
+				onChange={handleInputChange}
+				placeholder="University Name"
+			/>
+			<Input
+				id="web_pages"
+				name="web_pages"
+				type="text"
+				value={uniData.web_pages}
+				onChange={handleInputChange}
+				placeholder="University Website"
+			/>
+			<Input
+				id="country"
+				name="country"
+				type="text"
+				value={uniData.country}
+				onChange={handleInputChange}
+				placeholder="Country"
+			/>
+			<Input
+				id="alpha_two_code"
+				name="alpha_two_code"
+				type="text"
+				value={uniData.alpha_two_code}
+				onChange={handleInputChange}
+				placeholder="Country Code"
+			/>
+			<Box mt={2}>
+				<ButtonGroup variant="outlined" aria-label="small button group">
+					<Button onClick={handleSubmit} color="success">
+						Add
+					</Button>
+					<Button onClick={handleClick} color="primary">
+						Load
+					</Button>
+					<Button onClick={deleteRow} color="error">
+						Delete
+					</Button>
+				</ButtonGroup>
+			</Box>
+		</FormControl>
 	)
 }
-
 export default AddUniForm

@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+
 import AddUniForm from '../form'
 import UniTable from '../table'
+import { Container } from '@mui/material'
 
 const Layout = () => {
-	//this function fetches data from API - http://universities.hipolabs.com/search?country=Australia
-	//and displays it in a table
 	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
@@ -30,8 +33,8 @@ const Layout = () => {
 		}
 	}
 	// fetch data from API when load button is clicked
-
 	const handleClick = async () => {
+		console.log('clicked')
 		await fetchData()
 	}
 	// function to handle input change
@@ -39,7 +42,7 @@ const Layout = () => {
 		const { name, value } = e.target
 		if (name === 'name') {
 			setUniData({ ...uniData, name: value })
-		} else if (name === 'webPage') {
+		} else if (name === 'web_pages') {
 			setUniData({ ...uniData, web_pages: value })
 		} else if (name === 'country') {
 			setUniData({ ...uniData, country: value })
@@ -60,22 +63,41 @@ const Layout = () => {
 		})
 	}
 	// function to delete a row
-
 	const deleteRow = () => {
+		console.log('deleted')
 		const newData = [...data]
 		newData.pop()
 		setData(newData)
 	}
+
 	return (
-		<>
-			<AddUniForm
-				handleSubmit={handleSubmit}
-				handleInputChange={(e) => handleInputChange(e)}
-				handleClick={handleClick}
-				deleteRow={deleteRow}
-			/>
-			<UniTable data={data} loading={loading} error={error} />
-		</>
+		<Container maxWidth="md">
+			<Box sx={{ flexGrow: 1 }}>
+				<Grid container spacing={2}>
+					<Grid item xs={12}>
+						<Paper
+							sx={{
+								p: 2,
+								display: 'flex',
+								flexDirection: 'column',
+								height: 240,
+							}}
+						>
+							<AddUniForm
+								handleInputChange={handleInputChange}
+								handleSubmit={handleSubmit}
+								uniData={uniData}
+								handleClick={handleClick}
+								deleteRow={deleteRow}
+							/>
+						</Paper>
+					</Grid>
+					<Grid item xs={12}>
+						<UniTable data={data} loading={loading} error={error} />
+					</Grid>
+				</Grid>
+			</Box>
+		</Container>
 	)
 }
 

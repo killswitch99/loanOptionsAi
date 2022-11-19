@@ -32,7 +32,7 @@ const UniTable = (props) => {
 	return (
 		<div>
 			{props.loading ? (
-				<div>Loading...</div>
+				<div>click Load for Universities...</div>
 			) : props.error ? (
 				<div>Error: {props.error.message}</div>
 			) : (
