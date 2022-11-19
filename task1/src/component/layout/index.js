@@ -8,9 +8,14 @@ import AddUniForm from '../form'
 import UniTable from '../table'
 import { Container } from '@mui/material'
 
+import { useSelector, useDispatch } from 'react-redux'
+import {
+	universitiesListAction,
+	universitiesAddAction,
+	universitiesDeleteAction,
+} from '../actions/universityActions'
+
 const Layout = () => {
-	const [data, setData] = useState([])
-	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
 	const [uniData, setUniData] = useState({
 		name: '',
@@ -19,23 +24,14 @@ const Layout = () => {
 		alpha_two_code: '',
 	})
 
-	const fetchData = async () => {
-		try {
-			const response = await fetch(
-				'http://universities.hipolabs.com/search?country=Australia'
-			)
-			const json = await response.json()
-			setData(json)
-		} catch (error) {
-			setError(error)
-		} finally {
-			setLoading(false)
-		}
-	}
+	const dispatch = useDispatch()
+	const universities = useSelector((state) => state.universities)
+	const { loading } = universities
+
 	// fetch data from API when load button is clicked
 	const handleClick = async () => {
 		console.log('clicked')
-		await fetchData()
+		dispatch(universitiesListAction())
 	}
 	// function to handle input change
 	const handleInputChange = (e) => {
@@ -54,20 +50,27 @@ const Layout = () => {
 	// on submit button click to add new university data to the end of the data array
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		setData([...data, uniData])
+		dispatch(
+			universitiesAddAction({
+				payload: universities.universities.concat(uniData),
+			})
+		)
+		// reset the form
 		setUniData({
 			name: '',
 			web_pages: '',
 			country: '',
 			alpha_two_code: '',
 		})
+
+		console.log('added')
 	}
 	// function to delete a row
 	const deleteRow = () => {
 		console.log('deleted')
-		const newData = [...data]
+		const newData = [...universities.universities]
 		newData.pop()
-		setData(newData)
+		dispatch(universitiesDeleteAction({ payload: newData }))
 	}
 
 	return (
@@ -75,6 +78,7 @@ const Layout = () => {
 			<Box sx={{ flexGrow: 1 }}>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
+						<h2>University Data</h2>
 						<Paper
 							sx={{
 								p: 2,
@@ -93,7 +97,7 @@ const Layout = () => {
 						</Paper>
 					</Grid>
 					<Grid item xs={12}>
-						<UniTable data={data} loading={loading} error={error} />
+						<UniTable data={universities} loading={loading} error={error} />
 					</Grid>
 				</Grid>
 			</Box>

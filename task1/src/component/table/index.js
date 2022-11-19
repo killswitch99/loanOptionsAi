@@ -1,4 +1,4 @@
-import { Link } from '@mui/material'
+import { CircularProgress, Link } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import Table from '@mui/material/Table'
@@ -32,7 +32,7 @@ const UniTable = (props) => {
 	return (
 		<div>
 			{props.loading ? (
-				<div>click Load for Universities...</div>
+				<CircularProgress />
 			) : props.error ? (
 				<div>Error: {props.error.message}</div>
 			) : (
@@ -46,8 +46,9 @@ const UniTable = (props) => {
 								<StyledTableCell>Alpha Two Code</StyledTableCell>
 							</TableRow>
 						</TableHead>
+
 						<TableBody>
-							{props.data.map((item) => (
+							{props.data?.universities?.map((item) => (
 								<StyledTableRow key={item.name}>
 									<StyledTableCell component="th" scope="row">
 										{item.name}
